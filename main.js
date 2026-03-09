@@ -277,21 +277,40 @@ placeCandy();
 
 //create easterEgg Point
 const fontLoader = new FontLoader();
-fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
-	const textGeometry = new TextGeometry(numberOfCandy.toString(), {
-		height: 0.05,
-		size: 0.3,
-		rotationZ: Math.PI / 2,
-		font: droidFont,
-	});
-	const textMaterial = new THREE.MeshBasicMaterial({
-		color: 0xe2619f,
-	});
-	const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-	textMesh.position.set(-0.25, 0.3 - tableOffset, 0.15);
-	textMesh.rotation.set(-Math.PI / 2, 0, 0);
-	scene.add(textMesh);
-});
+fontLoader.load(
+	new URL('./fonts/Pixle_Font_Medium.json', import.meta.url),
+	(droidFont) => {
+		const textGeometry = new TextGeometry(numberOfCandy.toString(), {
+			height: 0.05,
+			size: 0.3,
+			rotationZ: Math.PI / 2,
+			font: droidFont,
+		});
+		const textMaterial = new THREE.MeshBasicMaterial({
+			color: 0xe2619f,
+		});
+		const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+		textMesh.position.set(-0.25, 0.3 - tableOffset, 0.15);
+		textMesh.rotation.set(-Math.PI / 2, 0, 0);
+		scene.add(textMesh);
+	},
+);
+// const fontLoader = new FontLoader();
+// fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
+// 	const textGeometry = new TextGeometry(numberOfCandy.toString(), {
+// 		height: 0.05,
+// 		size: 0.3,
+// 		rotationZ: Math.PI / 2,
+// 		font: droidFont,
+// 	});
+// 	const textMaterial = new THREE.MeshBasicMaterial({
+// 		color: 0xe2619f,
+// 	});
+// 	const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+// 	textMesh.position.set(-0.25, 0.3 - tableOffset, 0.15);
+// 	textMesh.rotation.set(-Math.PI / 2, 0, 0);
+// 	scene.add(textMesh);
+// });
 
 //resets tower
 const resetButton = document.getElementById('button1'); //Grab button1 from html
@@ -442,66 +461,142 @@ function winGame() {
 	// })
 
 	const fontLoader = new FontLoader();
-	fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
-		const textGeometry = new TextGeometry('YOU WIN'.toString(), {
-			height: 0.2,
-			size: 0.6,
-			rotationZ: Math.PI / 2,
-			font: droidFont,
-		});
-		const textMaterial = new THREE.MeshBasicMaterial({
-			color: 0xe2619f,
-		});
-		const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-		textMesh.position.set(-1.6, 1.5 - tableOffset, 2);
-		textMesh.rotation.set(0, 0, 0);
-		rotatePoint.add(textMesh);
-	});
-	fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
-		const textGeometry = new TextGeometry('YOU WIN'.toString(), {
-			height: 0.2,
-			size: 0.6,
-			rotationZ: Math.PI / 2,
-			font: droidFont,
-		});
-		const textMaterial = new THREE.MeshBasicMaterial({
-			color: 0x000ff,
-		});
-		const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-		textMesh.position.set(1.6, 1.5 - tableOffset, -2);
-		textMesh.rotation.set(0, Math.PI, 0);
-		rotatePoint.add(textMesh);
-	});
-	fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
-		const textGeometry = new TextGeometry('YOU WIN'.toString(), {
-			height: 0.2,
-			size: 0.6,
-			rotationZ: Math.PI / 2,
-			font: droidFont,
-		});
-		const textMaterial = new THREE.MeshBasicMaterial({
-			color: 0xff0000,
-		});
-		const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-		textMesh.position.set(-2, 1.5 - tableOffset, -1.6);
-		textMesh.rotation.set(0, -Math.PI / 2, 0);
-		rotatePoint.add(textMesh);
-	});
-	fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
-		const textGeometry = new TextGeometry('YOU WIN'.toString(), {
-			height: 0.2,
-			size: 0.6,
-			rotationZ: Math.PI / 2,
-			font: droidFont,
-		});
-		const textMaterial = new THREE.MeshBasicMaterial({
-			color: 0x00ff00,
-		});
-		const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-		textMesh.position.set(2, 1.5 - tableOffset, 1.6);
-		textMesh.rotation.set(0, Math.PI / 2, 0);
-		rotatePoint.add(textMesh);
-	});
+
+	fontLoader.load(
+		new URL('./fonts/Pixle_Font_Medium.json', import.meta.url),
+		(droidFont) => {
+			const textGeometry = new TextGeometry('YOU WIN', {
+				height: 0.2,
+				size: 0.6,
+				rotationZ: Math.PI / 2,
+				font: droidFont,
+			});
+			const textMaterial = new THREE.MeshBasicMaterial({
+				color: 0xe2619f,
+			});
+			const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+			textMesh.position.set(-1.6, 1.5 - tableOffset, 2);
+			textMesh.rotation.set(0, 0, 0);
+			rotatePoint.add(textMesh);
+		},
+	);
+
+	fontLoader.load(
+		new URL('./fonts/Pixle_Font_Medium.json', import.meta.url),
+		(droidFont) => {
+			const textGeometry = new TextGeometry('YOU WIN', {
+				height: 0.2,
+				size: 0.6,
+				rotationZ: Math.PI / 2,
+				font: droidFont,
+			});
+			const textMaterial = new THREE.MeshBasicMaterial({
+				color: 0x0000ff,
+			});
+			const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+			textMesh.position.set(1.6, 1.5 - tableOffset, -2);
+			textMesh.rotation.set(0, Math.PI, 0);
+			rotatePoint.add(textMesh);
+		},
+	);
+
+	fontLoader.load(
+		new URL('./fonts/Pixle_Font_Medium.json', import.meta.url),
+		(droidFont) => {
+			const textGeometry = new TextGeometry('YOU WIN', {
+				height: 0.2,
+				size: 0.6,
+				rotationZ: Math.PI / 2,
+				font: droidFont,
+			});
+			const textMaterial = new THREE.MeshBasicMaterial({
+				color: 0xff0000,
+			});
+			const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+			textMesh.position.set(-2, 1.5 - tableOffset, -1.6);
+			textMesh.rotation.set(0, -Math.PI / 2, 0);
+			rotatePoint.add(textMesh);
+		},
+	);
+
+	fontLoader.load(
+		new URL('./fonts/Pixle_Font_Medium.json', import.meta.url),
+		(droidFont) => {
+			const textGeometry = new TextGeometry('YOU WIN', {
+				height: 0.2,
+				size: 0.6,
+				rotationZ: Math.PI / 2,
+				font: droidFont,
+			});
+			const textMaterial = new THREE.MeshBasicMaterial({
+				color: 0x00ff00,
+			});
+			const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+			textMesh.position.set(2, 1.5 - tableOffset, 1.6);
+			textMesh.rotation.set(0, Math.PI / 2, 0);
+			rotatePoint.add(textMesh);
+		},
+	);
+	// fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
+	// 	const textGeometry = new TextGeometry('YOU WIN'.toString(), {
+	// 		height: 0.2,
+	// 		size: 0.6,
+	// 		rotationZ: Math.PI / 2,
+	// 		font: droidFont,
+	// 	});
+	// 	const textMaterial = new THREE.MeshBasicMaterial({
+	// 		color: 0xe2619f,
+	// 	});
+	// 	const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+	// 	textMesh.position.set(-1.6, 1.5 - tableOffset, 2);
+	// 	textMesh.rotation.set(0, 0, 0);
+	// 	rotatePoint.add(textMesh);
+	// });
+	// fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
+	// 	const textGeometry = new TextGeometry('YOU WIN'.toString(), {
+	// 		height: 0.2,
+	// 		size: 0.6,
+	// 		rotationZ: Math.PI / 2,
+	// 		font: droidFont,
+	// 	});
+	// 	const textMaterial = new THREE.MeshBasicMaterial({
+	// 		color: 0x000ff,
+	// 	});
+	// 	const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+	// 	textMesh.position.set(1.6, 1.5 - tableOffset, -2);
+	// 	textMesh.rotation.set(0, Math.PI, 0);
+	// 	rotatePoint.add(textMesh);
+	// });
+	// fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
+	// 	const textGeometry = new TextGeometry('YOU WIN'.toString(), {
+	// 		height: 0.2,
+	// 		size: 0.6,
+	// 		rotationZ: Math.PI / 2,
+	// 		font: droidFont,
+	// 	});
+	// 	const textMaterial = new THREE.MeshBasicMaterial({
+	// 		color: 0xff0000,
+	// 	});
+	// 	const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+	// 	textMesh.position.set(-2, 1.5 - tableOffset, -1.6);
+	// 	textMesh.rotation.set(0, -Math.PI / 2, 0);
+	// 	rotatePoint.add(textMesh);
+	// });
+	// fontLoader.load('./fonts/Pixle_Font_Medium.json', (droidFont) => {
+	// 	const textGeometry = new TextGeometry('YOU WIN'.toString(), {
+	// 		height: 0.2,
+	// 		size: 0.6,
+	// 		rotationZ: Math.PI / 2,
+	// 		font: droidFont,
+	// 	});
+	// 	const textMaterial = new THREE.MeshBasicMaterial({
+	// 		color: 0x00ff00,
+	// 	});
+	// 	const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+	// 	textMesh.position.set(2, 1.5 - tableOffset, 1.6);
+	// 	textMesh.rotation.set(0, Math.PI / 2, 0);
+	// 	rotatePoint.add(textMesh);
+	// });
 	explodeCandy();
 }
 
