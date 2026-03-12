@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* MOBILE LAYOUT */
+@media (max-width: 768px) {
+	#sidePanel {
+		display: none;
+	}
+
+	#mobileUI {
+		display: flex;
+	}
+
+	#canvasContainer {
+		width: 100% !important;
+	}
+
+	body,
+	html {
+		overflow: hidden;
+	}
+}

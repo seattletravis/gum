@@ -13,15 +13,18 @@ gsap.registerPlugin(Flip, EaselPlugin, TextPlugin);
 
 var gameOver = false;
 
+//create three objects - initialize THREE
 const scene = new THREE.Scene();
-const canvasContainer = document.querySelector('#canvasContainer');
+const canvasContainer = document.querySelector('#canvasContainer'); //Grab canvas Container from document
 let gravityMaxValue = -9;
 let tableOffset = 4;
 
+//create physics engine - initialize CANNON
 const physicsWorld = new CANNON.World({
-	gravity: new CANNON.Vec3(0, gravityMaxValue, 0),
+	gravity: new CANNON.Vec3(0, gravityMaxValue, 0), //Ramp Gravity up in Function
 });
 
+//Function to apply visual bodies to physics bodies - call from animate()
 function linkPhysics() {
 	for (let i = 0; i < candyPhysicsArray.length; i++) {
 		candyVisualArray[i].position.copy(candyPhysicsArray[i].position);
@@ -29,15 +32,18 @@ function linkPhysics() {
 	}
 }
 
-physicsWorld.defaultContactMaterial.contactEquationRestitution = 0.1;
-physicsWorld.defaultContactMaterial.contactEquationStiffness = 5000;
-physicsWorld.defaultContactMaterial.friction = 3;
+//ENVIRONMENTAL VARIABLES
+physicsWorld.defaultContactMaterial.contactEquationRestitution = 0.1; //default = ?
+physicsWorld.defaultContactMaterial.contactEquationStiffness = 5000; //default 50,000,000
+physicsWorld.defaultContactMaterial.friction = 3; //default = 0.3
 physicsWorld.defaultContactMaterial.contactEquationRelaxationTime = 0.5;
 
+//Window resize handler
 window.onresize = function () {
 	resetTower();
 };
 
+//create camera object
 const camera = new THREE.PerspectiveCamera(
 	45,
 	canvasContainer.offsetWidth / canvasContainer.offsetHeight,
@@ -46,6 +52,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(5, 2, 20);
 
+//create renderer
 const renderer = new THREE.WebGLRenderer({
 	antialias: true,
 	canvas: document.querySelector('canvas'),
@@ -54,12 +61,15 @@ renderer.setSize(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.shadowMap.enabled = true;
 
+//orbit controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.update();
 
+// add ambient light source
 const light = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(light);
 
+//add pano as BG
 var panoGeometry = new THREE.SphereGeometry(50, 60, 40);
 panoGeometry.scale(-1, 1, 1);
 var panoMaterial = new THREE.MeshBasicMaterial({
@@ -69,16 +79,19 @@ var panoMesh = new THREE.Mesh(panoGeometry, panoMaterial);
 panoMesh.position.set(0, 0, 0);
 scene.add(panoMesh);
 
+//Key Light
 const gameLight = new THREE.PointLight(0xffffff, 0.7, 2000);
 gameLight.castShadow = true;
 gameLight.position.set(-3, 10, 3);
 scene.add(gameLight);
 
+//Fill Light
 const fillLight = new THREE.PointLight(0xffffff, 0.4, 2000);
 fillLight.castShadow = true;
 fillLight.position.set(2, 10, -2);
 scene.add(fillLight);
 
+//make a round table top
 const tableTexture = new THREE.TextureLoader().load('./tower_images/wood.jpg');
 const tableBody = new CANNON.Body({
 	shape: new CANNON.Cylinder(5, 5, 0.25, 50),
@@ -86,7 +99,7 @@ const tableBody = new CANNON.Body({
 });
 tableBody.position.set(0, 0 - tableOffset, 0);
 physicsWorld.addBody(tableBody);
-const tableVisualBody = new THREE.Mesh(
+const tableVisualBody = new THREE.Mesh( //visual part of ground
 	new THREE.CylinderGeometry(5, 5, 0.25, 50),
 	new THREE.MeshStandardMaterial({
 		map: tableTexture,
@@ -98,13 +111,14 @@ tableVisualBody.userData.ground = true;
 tableVisualBody.position.copy(tableBody.position);
 tableVisualBody.quaternion.copy(tableBody.quaternion);
 
+//make a round table Leg
 const tableLegBody = new CANNON.Body({
 	shape: new CANNON.Cylinder(0.7, 0.7, 16, 50),
 	type: CANNON.Body.STATIC,
 });
 tableLegBody.position.set(0, -8 - tableOffset, 0);
 physicsWorld.addBody(tableLegBody);
-const tableLegVisualBody = new THREE.Mesh(
+const tableLegVisualBody = new THREE.Mesh( //visual part of ground
 	new THREE.CylinderGeometry(0.7, 0.7, 16, 50),
 	new THREE.MeshStandardMaterial({
 		map: tableTexture,
@@ -119,6 +133,7 @@ tableLegVisualBody.quaternion.copy(tableLegBody.quaternion);
 const candyPhysicsArray = [];
 const candyVisualArray = [];
 
+//make candy jar
 const holdingBoxnx = new THREE.BoxGeometry(0.1, 3, 3, 10, 10, 10);
 const holdingBoxpx = new THREE.BoxGeometry(0.1, 3, 3, 10, 10, 10);
 const holdingBoxbottom = new THREE.BoxGeometry(3, 0.1, 3, 10, 10, 10);
@@ -184,6 +199,7 @@ candyPhysicsArray.push(boxPhysicsnz);
 physicsWorld.addBody(boxPhysicspz);
 candyPhysicsArray.push(boxPhysicspz);
 
+//make candies
 let listOfEachCandy = [];
 const colorSheet = [0xff0000, 0x00ff00, 0x0000ff, 0xe2619f, 0xffef00, 0xf88128];
 
@@ -226,6 +242,7 @@ function placeCandy() {
 
 placeCandy();
 
+//create easterEgg Point
 const fontLoader = new FontLoader();
 fontLoader.load(
 	new URL('./fonts/Pixle_Font_Medium.json', import.meta.url),
@@ -246,11 +263,13 @@ fontLoader.load(
 	},
 );
 
-const resetButton = document.getElementById('button1');
+//resets tower
+const resetButton = document.getElementById('button1'); //Grab button1 from html
 function resetTower() {
 	location.reload();
 }
 resetButton.addEventListener('click', function () {
+	//give Button functionality - BUTTON ARMED
 	resetTower();
 });
 
@@ -281,95 +300,70 @@ const lowGuesses = document.getElementById('lowGuesses');
 const highGuesses = document.getElementById('highGuesses');
 const gameMessage = document.getElementById('gameMessage');
 
-const mobileMessage = document.getElementById('mobileMessage');
-const mobileGuess = document.getElementById('mobileGuess');
-const mobileGuessButton = document.getElementById('mobileGuessButton');
-const mobileResetButton = document.getElementById('mobileResetButton');
-
-function getLowestLow() {
-	return tooLowInt.length ? Math.max(...tooLowInt) : null;
-}
-
-function getHighestHigh() {
-	return tooHighInt.length ? Math.min(...tooHighInt) : null;
-}
-
-function getRangeMessage() {
-	const low = getLowestLow();
-	const high = getHighestHigh();
-
-	if (low !== null && high !== null) {
-		return `Please choose a number between ${low + 1} and ${high - 1}.`;
-	}
-
-	if (low !== null) {
-		return `Please choose a number higher than ${low}.`;
-	}
-
-	if (high !== null) {
-		return `Please choose a number lower than ${high}.`;
-	}
-
-	return 'Enter a number between 0 and 1000.';
-}
-
-function syncMessages() {
-	if (mobileMessage) {
-		mobileMessage.innerText = gameMessage.innerText;
-	}
-}
-
 function checkGuess() {
 	let guessedNumber = Number(document.getElementById('playerGuess').value);
-
-	if (guessedNumber === 0) {
-		gameMessage.innerText = "The number of GumBalls isn't 0! Guess again.";
-		syncMessages();
-		return;
+	if (guessedNumber == 0) {
+		gameMessage.innerText =
+			"The number of GumBalls isn't 0! We wont count that as a guess, guess again.";
+	} else {
+		guessCount += 1;
+		if (gameOver == true) {
+			guessCount -= 1;
+			gameMessage.innerText =
+				'You guessed it already in ' +
+				guessCount +
+				' tries! The number of GumBalls is still ' +
+				numberOfCandy +
+				'!';
+		} else if (
+			tooLowInt.includes(guessedNumber) ||
+			tooHighInt.includes(guessedNumber)
+		) {
+			gameMessage.innerText =
+				"You already guessed that number. Guess a number you haven't tried yet!";
+		} else if (guessedNumber == numberOfCandy && guessCount == 1) {
+			gameMessage.innerText =
+				'You Guessed it! It took you ' +
+				guessCount +
+				' try. There are ' +
+				numberOfCandy +
+				' GumBalls!';
+			gameOver = true;
+			winGame();
+		} else if (guessedNumber == numberOfCandy && guessCount > 1) {
+			gameMessage.innerText =
+				'You Guessed it! It took you ' +
+				guessCount +
+				' tries. There are ' +
+				numberOfCandy +
+				' GumBalls!';
+			gameOver = true;
+			winGame();
+		} else if (guessedNumber < numberOfCandy) {
+			tooLowInt.push(guessedNumber);
+			gameMessage.innerText =
+				'Your Guess of ' +
+				guessedNumber +
+				' is Too Low, but Guess Again. You can still win!!';
+			tooLowInt.sort(function (a, b) {
+				return a - b;
+			});
+			lowGuesses.innerText = 'Low Guesses: ' + tooLowInt.join(', ');
+		} else if (guessedNumber > numberOfCandy) {
+			tooHighInt.push(guessedNumber);
+			gameMessage.innerText =
+				'You Guessed Too High, Guess Lower than ' +
+				guessedNumber +
+				'. You can still win this!';
+			tooHighInt.sort(function (a, b) {
+				return a - b;
+			});
+			highGuesses.innerText = 'High Guesses: ' + tooHighInt.join(', ');
+		} else {
+			console.log('error');
+		}
 	}
-
-	if (gameOver) {
-		gameMessage.innerText = `You already won! The number is still ${numberOfCandy}.`;
-		syncMessages();
-		return;
-	}
-
-	if (tooLowInt.includes(guessedNumber) || tooHighInt.includes(guessedNumber)) {
-		gameMessage.innerText = 'You already guessed that number. Try a new one.';
-		syncMessages();
-		return;
-	}
-
-	guessCount++;
-
-	if (guessedNumber === numberOfCandy) {
-		gameOver = true;
-		gameMessage.innerText = `You guessed it in ${guessCount} tries! There are ${numberOfCandy} GumBalls!`;
-		winGame();
-		syncMessages();
-		return;
-	}
-
-	if (guessedNumber < numberOfCandy) {
-		tooLowInt.push(guessedNumber);
-		tooLowInt.sort((a, b) => a - b);
-		lowGuesses.innerText = 'Low Guesses: ' + tooLowInt.join(', ');
-	}
-
-	if (guessedNumber > numberOfCandy) {
-		tooHighInt.push(guessedNumber);
-		tooHighInt.sort((a, b) => a - b);
-		highGuesses.innerText = 'High Guesses: ' + tooHighInt.join(', ');
-	}
-
-	gameMessage.innerText = getRangeMessage();
-	syncMessages();
 }
-
-guessButton.addEventListener('click', () => {
-	checkGuess();
-	document.getElementById('playerGuess').value = '';
-});
 
 window.onkeyup = function (e) {
 	let key = e.key.toLowerCase();
@@ -378,20 +372,6 @@ window.onkeyup = function (e) {
 		document.getElementById('playerGuess').value = '';
 	}
 };
-
-if (mobileGuessButton) {
-	mobileGuessButton.addEventListener('click', () => {
-		document.getElementById('playerGuess').value = mobileGuess.value;
-		checkGuess();
-		mobileGuess.value = '';
-	});
-}
-
-if (mobileResetButton) {
-	mobileResetButton.addEventListener('click', resetTower);
-}
-
-syncMessages();
 
 function explodeCandy() {
 	for (let i = 0; i < listOfEachCandy.length; i++) {
@@ -492,6 +472,7 @@ function winGame() {
 	explodeCandy();
 }
 
+//ANIMATION FUNCTION
 function animate() {
 	requestAnimationFrame(animate);
 	physicsWorld.fixedStep();

@@ -5,32 +5,9 @@
 		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>BLOCKS GAMEROOM</title>
-
-		<style>
-			/* MOBILE LAYOUT */
-			@media (max-width: 768px) {
-				#sidePanel {
-					display: none;
-				}
-
-				#mobileUI {
-					display: flex !important;
-				}
-
-				#canvasContainer {
-					width: 100% !important;
-				}
-
-				body,
-				html {
-					overflow: hidden;
-				}
-			}
-		</style>
 	</head>
-
-	<body class="bg-black select-none">
-		<!-- MOBILE TOP BAR -->
+	<body>
+		<!-- MOBILE TOP BAR (hidden on desktop) -->
 		<div
 			id="mobileUI"
 			class="hidden flex-col bg-black p-2 border-b-4 border-green-600">
@@ -56,13 +33,12 @@
 				</button>
 			</div>
 		</div>
-
-		<!-- DESKTOP LAYOUT -->
-		<div class="flex h-screen">
-			<!-- LEFT SIDE PANEL -->
+		<div class="flex h-screen bg-black select-none">
+			<!-- LEFT SIDE PANEL CONTROLS AND INFO -->
 			<div
 				id="sidePanel"
 				class="border-4 border-green-600 w-1/2 flex flex-col justify-center px-2">
+				<!-- TRAVIS.LAMBERTE.COM -->
 				<div class="flex flex-col items-center">
 					<a
 						id="enterButton"
@@ -79,16 +55,14 @@
 					</h1>
 					<h1 class="text-green-600">Yummy! Yummy! GumBalls!!!</h1>
 				</div>
-
+				<!-- NAVAGATION PANE AND SCORE BOARD PANEL-->
 				<div class="flex justify-center items-center">
 					<div class="flex font-bold justify-center">
 						<div class="flow-root"></div>
 					</div>
 				</div>
-
 				<br />
-
-				<!-- GAME CONTROLS -->
+				<!-- GAME CONTROLS PANEL -->
 				<div
 					class="flex flex-col items-center border-2 border-green-600 rounded-lg">
 					<h1 id="gameMessage" class="text-green-600">
@@ -106,7 +80,6 @@
 						name="guess"
 						min="1" />
 					<br />
-
 					<div class="px-8 flex flex-col items-center">
 						<button
 							id="guessButton"
@@ -116,8 +89,9 @@
 						</button>
 					</div>
 
-					<br />
+					<!-- LOOKING FOR THE CLASSES FOR THE BUTTONS? - LOOK IN MAIN.JS LINE ~150 -->
 
+					<br />
 					<div class="px-8 flex flex-col items-center">
 						<button
 							id="button1"
@@ -126,17 +100,14 @@
 							RESET
 						</button>
 					</div>
-
 					<br />
 				</div>
 			</div>
-
-			<!-- GAME CANVAS -->
+			<!-- RIGHT SIDE PANEL - GAME SCREEN -->
 			<div id="canvasContainer" class="w-3/4 bg-white">
 				<canvas></canvas>
 			</div>
 		</div>
-
 		<script type="module" src="/main.js"></script>
 	</body>
 </html>
