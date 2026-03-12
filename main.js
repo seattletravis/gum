@@ -46,6 +46,18 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(5, 2, 20);
 
+if (window.innerWidth < 768) {
+	camera.position.set(5, 0.5, 20);
+}
+
+window.addEventListener('resize', () => {
+	if (window.innerWidth < 768) {
+		camera.position.set(5, 0.5, 20);
+	} else {
+		camera.position.set(5, 2, 20);
+	}
+});
+
 const renderer = new THREE.WebGLRenderer({
 	antialias: true,
 	canvas: document.querySelector('canvas'),
