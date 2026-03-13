@@ -6,8 +6,8 @@ const outDir = resolve(__dirname, 'dist');
 
 export default defineConfig({
 	root,
-	base: '/bubblegum/', // <-- ADD THIS LINE
-	// base: '/',
+	// base: '/bubblegum/', // <-- ADD THIS LINE
+	base: '/',
 	plugins: [],
 	build: {
 		outDir,

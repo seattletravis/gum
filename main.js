@@ -17,6 +17,7 @@ const scene = new THREE.Scene();
 const canvasContainer = document.querySelector('#canvasContainer');
 let gravityMaxValue = -9;
 let tableOffset = 4;
+let physicsEnabled = true;
 
 const physicsWorld = new CANNON.World({
 	gravity: new CANNON.Vec3(0, gravityMaxValue, 0),
@@ -44,19 +45,6 @@ const camera = new THREE.PerspectiveCamera(
 	0.5,
 	1000,
 );
-camera.position.set(5, 2, 20);
-
-if (window.innerWidth < 768) {
-	camera.position.set(5, 0.5, 20);
-}
-
-window.addEventListener('resize', () => {
-	if (window.innerWidth < 768) {
-		camera.position.set(5, 0.5, 20);
-	} else {
-		camera.position.set(5, 2, 20);
-	}
-});
 
 const renderer = new THREE.WebGLRenderer({
 	antialias: true,
@@ -66,8 +54,19 @@ renderer.setSize(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.shadowMap.enabled = true;
 
+camera.position.set(0, 2, 20);
+
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.update();
+
+let mobileCameraInitialized = false;
+
+if (window.innerWidth < 768 && !mobileCameraInitialized) {
+	mobileCameraInitialized = true;
+	camera.position.set(5, 0, 14);
+	controls.target.set(0, -5, 0);
+	controls.update();
+}
 
 const light = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(light);
@@ -220,6 +219,13 @@ function createCandy(candyName, position, color) {
 	candyVisualArray.push(candyName);
 }
 
+function checkIfSettled() {
+	for (let body of listOfEachCandy) {
+		if (body.sleepState !== 2) return false;
+	}
+	return true;
+}
+
 let numberOfCandy = 400 + Math.floor(Math.random() * 500);
 function placeCandy() {
 	let candyY = -tableOffset;
@@ -237,6 +243,13 @@ function placeCandy() {
 }
 
 placeCandy();
+
+let settleCheckInterval = setInterval(() => {
+	if (checkIfSettled()) {
+		physicsEnabled = false;
+		clearInterval(settleCheckInterval);
+	}
+}, 500);
 
 const fontLoader = new FontLoader();
 fontLoader.load(
@@ -500,13 +513,20 @@ function winGame() {
 			rotatePoint.add(textMesh);
 		},
 	);
-
+	physicsEnabled = true;
 	explodeCandy();
+	setTimeout(() => {
+		physicsEnabled = false;
+	}, 10000);
 }
 
 function animate() {
 	requestAnimationFrame(animate);
-	physicsWorld.fixedStep();
+	// physicsWorld.fixedStep();
+	if (physicsEnabled) {
+		physicsWorld.fixedStep();
+	}
+
 	linkPhysics();
 	renderer.render(scene, camera);
 
